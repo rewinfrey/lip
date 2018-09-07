@@ -26,7 +26,7 @@ import Control.Applicative
 -- Parsing an input stream will either yield a parsed result, or error by not
 -- consuming the entire input stream, or error because of a parser error.
 -- TODO: add more robust error information indicating where the error in the input
--- stream occurred.
+-- stream occurred. Either would let us track errors.
 runParser :: Parser a -> String -> a
 runParser m s =
   case parse m s of
