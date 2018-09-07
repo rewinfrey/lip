@@ -90,6 +90,25 @@ instance MonadPlus Parser where
 -- TODO: Express this without `MonadPlus` by using only `Alternative`, `Semigroup`, and `Monoid`.
 -- TODO: Explore defining the ideas of mzero and mplus in the semilattices package (thinking `Join` and `Lower`).
 
+-- Alternative is a Monoid on Applicative Functors (Parser). Minimal complete
+-- definition includes `empty` and `(<|>)`, although `some` and `many` can be defined.
+instance Alternative Parser where
+  empty = mzero
+  (<|>) = option
+  -- `some` and `many` are both derived automatically. These would be their definitions:
+  --
+  -- One or more.
+  -- some :: f a -> f [a]
+  -- some v = some_v
+  --  where some_v = (:) <$> v <*> many_v
+  --        many_v = some_v <|> pure []
+  --
+  -- Zero or more.
+  -- many :: f a -> f [a]
+  -- many v = many_v
+  --  where many_v = some_v <|> pure []
+  --        some_v = (:) <$> v <*> many_v
+
 -- Injects a single pure value as the result without reading from the input stream.
 unit :: a -> Parser a
 unit a = Parser (\s -> [(a, s)])
