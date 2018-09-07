@@ -163,3 +163,8 @@ With bind operator:
 satisfy p = item >>= \c -> if p c then unit c else failure
 -}
 
+-- Returns a parser that succeeds when given a Char that's an element of a provided list of Chars.
+-- This is most helpful for sets of Chars (e.g. a list of whitespace Chars).
+oneOf :: [Char] -> Parser Char
+oneOf = satisfy . flip elem
+
