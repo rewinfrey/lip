@@ -139,3 +139,27 @@ item = Parser $ \s ->
   case s of
     []     -> []
     (c:cs) -> [(c,cs)]
+
+-- Tests a predicate function on the head of the input String, returning a parsed
+-- result or the failure Parser (if the predicate failed). The failure Parser
+-- accepts all input but always returns the empty list.
+satisfy :: (Char -> Bool) -> Parser Char
+satisfy p = item `bind` \c ->
+  if p c
+  then unit c
+  else failure
+
+{-
+With do syntactic sugar:
+satisfy p = do
+  c <- item
+  if p c
+  then unit c
+  else failure
+-}
+
+{-
+With bind operator:
+satisfy p = item >>= \c -> if p c then unit c else failure
+-}
+
