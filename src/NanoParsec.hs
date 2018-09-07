@@ -62,6 +62,34 @@ instance Monad Parser where
 instance MonadPlus Parser where
   mzero = failure
   mplus = combine
+-- Question: http://hackage.haskell.org/package/base-4.11.1.0/docs/Control-Monad.html#t:MonadPlus
+-- indicates that the default implementation for `mzero` is `empty`. The Hackage
+-- docs indicate that `empty` is a method belonging to the Alternative type class.
+-- Is there a significant reason why this MonadPlus instance overrides the default
+-- definition of `mzero` for `failure`, yet the Alternative instance defines empty in terms
+-- of mzero?
+-- Why not instead use the default definition of `mzero` (i.e. `empty`) and define
+-- `empty` as `failure`?
+-- My best guess is Alternative is a lower level abstraction because its super class
+-- is Applicative, whereas MonadPlus is a higher level abstraction because its super
+-- class is Monad. I think it's better to define methods of lower level abstractions
+-- (i.e. Alternative's `empty` in this context) in terms of its equivalent higher
+-- level abstraction (i.e. MonadPlus' `mzero`).
+-- But that doesn't seem to jive with how `MonadPlus` defines `mzero` by default in terms
+-- of `Alternative`'s `empty`.
+-- My next best guess is that because we're wanting to define Monoidal operations
+-- for the `Monad Parser` via the `MonadPlus Parser` type class instance, then it's
+-- preferable to keep `mzero` and `mplus` at the same level of abstraction
+-- (i.e. in terms of the user defined `failure` and `combine` functions, respectively).
+-- Maintaining the default definition of `MonadPlus`'s `mzero` method for this instance
+-- means we have `mplus` referring to a user defined function, but that we have to follow
+-- `Alternative Parser`'s definition of `empty` to find `failure`.
+-- It almost seems like we could use an `ApplicativePlus` type class that lets us keep
+-- these Monoidal operations at the same level of abstraction (i.e. super class for both
+-- `Alternative` and `ApplicativePlus` is `Applicative`).
+-- TODO: Express this without `MonadPlus` by using only `Alternative`, `Semigroup`, and `Monoid`.
+-- TODO: Explore defining the ideas of mzero and mplus in the semilattices package (thinking `Join` and `Lower`).
+
 -- Injects a single pure value as the result without reading from the input stream.
 unit :: a -> Parser a
 unit a = Parser (\s -> [(a, s)])
