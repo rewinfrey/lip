@@ -58,6 +58,10 @@ instance Monad Parser where
   return = unit
   (>>=)  = bind
 
+-- The MonadPlus type class is for Monads that also support choice and failure.
+instance MonadPlus Parser where
+  mzero = failure
+  mplus = combine
 -- Injects a single pure value as the result without reading from the input stream.
 unit :: a -> Parser a
 unit a = Parser (\s -> [(a, s)])
