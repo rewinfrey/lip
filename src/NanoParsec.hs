@@ -109,6 +109,20 @@ instance Alternative Parser where
   --  where many_v = some_v <|> pure []
   --        some_v = (:) <$> v <*> many_v
 
+combine :: Parser a -> Parser a -> Parser a
+combine p q = Parser (\s -> parse p s <> parse q s)
+-- Nit: The tutorial defines this as: combine p q = Parser (\s -> parse p s ++ parse q s),
+-- but it's safer and arguably more morally correct to prefer `(<>)` over `(++)`.
+
+failure :: Parser a
+failure = Parser (\cs -> [])
+
+option :: Parser a -> Parser a -> Parser a
+option p q = Parser $ \s ->
+  case parse p s of
+    []  -> parse q s
+    res -> res
+
 -- Injects a single pure value as the result without reading from the input stream.
 unit :: a -> Parser a
 unit a = Parser (\s -> [(a, s)])
