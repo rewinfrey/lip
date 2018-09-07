@@ -168,3 +168,21 @@ satisfy p = item >>= \c -> if p c then unit c else failure
 oneOf :: [Char] -> Parser Char
 oneOf = satisfy . flip elem
 
+-- chainl allows parsing expressions like `1 + 2 + 3`. The first Parser is used to
+-- parse an operand and the second Parser is used to parse the operator.
+-- chainl relies on recursion via the chainl1 function, which flattens out left
+-- associated recursive productions, and stops after parsing the final operand
+-- in a operator expression.
+chainl :: Parser a -> Parser (a -> a -> a) -> a -> Parser a
+chainl p op a = (p `chainl1` op) <|> return a
+
+chainl1 :: Parser a -> Parser (a -> a -> a) -> Parser a
+chainl1 p op = do
+  a <- p
+  rest a
+  where
+    rest a = recur a <|> return a
+    recur a = do
+      f <- op
+      b <- p
+      rest (f a b)
