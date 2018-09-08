@@ -4,11 +4,11 @@ This repository is a collection of experiments in language development including
 
 ### References
 
-* [Diehl, Stephen. Write You a Haskell. Referenced from http://dev.stephendiehl.com/fun/](http://dev.stephendiehl.com/fun/)
-* [lilo](https://github.com/tclem/lilo)
+* [Diehl, Stephen. Write You a Haskell. Referenced from http://dev.stephendiehl.com/fun/.](http://dev.stephendiehl.com/fun/)
+* [Clem, Timothy. lilo. Git Repository Referenced from https://github.com/tclem/lilo.](https://github.com/tclem/lilo)
 * [Parr, Terence. Language Implementation Patterns: Create Your Own Domain-Specific and General Programming Languages. Pragmatic Bookshelf, 2010.](https://pragprog.com/book/tpdsl/language-implementation-patterns)
 * [Ranta, Aarne. Implementing Programming Languages: An Introduction to Compilers and Interpreters. College Publications, 2012.](http://www.cse.chalmers.se/edu/year/2012/course/DAT150/lectures/plt-book.pdf)
-* [Wheat, Jake. Intro to Parsing with Parsec in Haskell. Referenced from https://jakewheat.github.io/intro_to_parsing/](https://jakewheat.github.io/intro_to_parsing/)
+* [Wheat, Jake. Intro to Parsing with Parsec in Haskell. Referenced from https://jakewheat.github.io/intro_to_parsing/.](https://jakewheat.github.io/intro_to_parsing/)
 
 ### MIT License
 Copyright 2018 Rick Winfrey
