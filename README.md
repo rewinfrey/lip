@@ -4,9 +4,10 @@ This repository is a collection of experiments in language development including
 
 ### References
 
-* [Language Implementation Patterns](https://pragprog.com/book/tpdsl/language-implementation-patterns)
-* [Implementing Programming Languages](http://www.cse.chalmers.se/edu/year/2012/course/DAT150/lectures/plt-book.pdf)
-* [Write You a Haskell](http://dev.stephendiehl.com/fun/)
+* [Parr, Terence. Language Implementation Patterns: Create Your Own Domain-Specific and General Programming Languages. Pragmatic Bookshelf, 2010.](https://pragprog.com/book/tpdsl/language-implementation-patterns)
+* [lilo](https://github.com/tclem/lilo)
+* [Ranta, Aarne. Implementing Programming Languages: An Introduction to Compilers and Interpreters. College Publications, 2012.](http://www.cse.chalmers.se/edu/year/2012/course/DAT150/lectures/plt-book.pdf)
+* [Diehl, Stephen. Write You a Haskell. Referenced from http://dev.stephendiehl.com/fun/](http://dev.stephendiehl.com/fun/)
 
 ### MIT License
 Copyright 2018 Rick Winfrey
