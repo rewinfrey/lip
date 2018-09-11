@@ -200,3 +200,15 @@ char c = do
 natural :: Parser Integer
 natural = read <$> some (satisfy isDigit)
 
+-- The string combinator uses the char combinator recursively to define a series
+-- of nested Parser Char parsers. The result is either failure or the provided
+-- String (meaning parsing was successful). When failure occurs, the string parser
+-- combinator immediately returns without testing against the remaining Parser Char
+-- parsers.
+string :: String -> Parser String
+string []     = return []
+string (c:cs) = do
+  char c
+  string cs
+  return (c:cs)
+
