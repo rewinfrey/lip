@@ -309,3 +309,6 @@ token p = do
 reserved :: String -> Parser String
 reserved s = token (string s)
 
+spaces :: Parser String
+spaces = many $ oneOf " \t\n\r"
+
