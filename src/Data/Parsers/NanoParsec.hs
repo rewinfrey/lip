@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -fno-warn-unused-do-bind #-}
 
-module NanoParsec where
+module Data.Parsers.NanoParsec where
 
 {-
   NanoParsec is based entirely on http://dev.stephendiehl.com/fun/002_parsers.html.
@@ -205,19 +205,13 @@ natural = read <$> some (satisfy isDigit)
 -- parsers.
 string :: String -> Parser String
 string []     = return []
+string (c:cs) = char c >> string cs >> return (c:cs)
+
+{-
 string (c:cs) = do
   char c
   string cs
   return (c:cs)
-
-{-
-
-string (c:cs) = do {
-  char c >>= \_ ->
-    string cs >>= \_ ->
-      return (c:cs)
-}
-
 -}
 
 {-

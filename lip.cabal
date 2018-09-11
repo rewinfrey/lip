@@ -27,7 +27,7 @@ source-repository head
 library
   exposed-modules:
       Lib
-      NanoParsec
+      Data.Parsers.NanoParsec
   other-modules:
       Paths_lip
   hs-source-dirs:
