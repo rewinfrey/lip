@@ -306,3 +306,6 @@ token p = do
   spaces
   return a
 
+reserved :: String -> Parser String
+reserved s = token (string s)
+
