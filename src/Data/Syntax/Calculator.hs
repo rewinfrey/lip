@@ -5,6 +5,7 @@ import Control.Applicative ((<|>))
 
 data Expr
   = Add Expr Expr
+  | Div Expr Expr
   | Mul Expr Expr
   | Sub Expr Expr
   | Lit Int
@@ -31,4 +32,4 @@ addOp :: Parser (Expr -> Expr -> Expr)
 addOp = (infixOp "+" Add) <|> (infixOp "-" Sub)
 
 mulOp :: Parser (Expr -> Expr -> Expr)
-mulOp = infixOp "*" Mul
+mulOp = (infixOp "*" Mul) <|> (infixOp "/" Div)

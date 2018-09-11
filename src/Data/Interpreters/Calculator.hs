@@ -7,6 +7,7 @@ import Data.Syntax.Calculator
 eval :: Expr -> Int
 eval ex = case ex of
   Add a b -> eval a + eval b
+  Div a b -> (eval a) `div` (eval b)
   Mul a b -> eval a * eval b
   Sub a b -> eval a - eval b
   Lit n   -> n
