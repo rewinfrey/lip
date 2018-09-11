@@ -27,6 +27,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Data.Interpreters.Calculator
       Data.Parsers.NanoParsec
       Data.Syntax.Calculator
   other-modules:
