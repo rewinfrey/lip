@@ -312,3 +312,6 @@ reserved s = token (string s)
 spaces :: Parser String
 spaces = many $ oneOf " \t\n\r"
 
+digit :: Parser Char
+digit = satisfy isDigit
+
