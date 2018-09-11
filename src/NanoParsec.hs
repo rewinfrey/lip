@@ -195,3 +195,8 @@ char c = do
   traceM "in char"
   satisfy (c ==)
 
+-- The natural combinator succeeds if the current Char is a digit when parsing
+-- the input String.
+natural :: Parser Integer
+natural = read <$> some (satisfy isDigit)
+
