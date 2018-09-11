@@ -212,3 +212,91 @@ string (c:cs) = do
   string cs
   return (c:cs)
 
+{-
+
+string (c:cs) = do {
+  char c >>= \_ ->
+    string cs >>= \_ ->
+      return (c:cs)
+}
+
+-}
+
+{-
+let x = string "ABC"
+            |
+            |
+          char A
+            |
+            |
+            satisfy (A == )
+                  |
+                  |
+                item (\c -> if p c; then unit c; else failure)
+                                        |
+                                        |
+                                     Parser c
+                                        |
+                                        |
+                   ---------------------
+                  |
+                  |
+                string "BC"
+                    |
+                    |
+                    ...
+
+parse x "ABC"
+      |
+      |
+    char A
+      |
+      |
+      satisfy (A == )
+            |
+            |
+          item (\c -> if p c; then unit A; else failure)
+                                  |
+                                  |
+                               Parser A
+                                  |
+                                  |
+             ---------------------
+            |
+            |
+          string "BC"
+              |
+              |
+            Char B
+              |
+              |
+              satisfy (B == )
+                    |
+                    |
+                  item (\c -> if p c; then unit B; else failure)
+                                          |
+                                          |
+                                       Parser B
+                                          |
+                                          |
+                      ---------------------
+                    |
+                    |
+                  string "C"
+                      |
+                      |
+                    Char C
+                      |
+                      |
+                      satisfy (C == )
+                            |
+                            |
+                          item (\c -> if p c; then unit C; else failure)
+                                                  |
+                                                  |
+                                               Parser C
+                                                  |
+                                                  |
+                                              ["ABC", ""]
+-}
+
