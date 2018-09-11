@@ -321,3 +321,9 @@ number = do
   cs <- some digit
   return $ read (s <> cs)
 
+parens :: Parser a -> Parser a
+parens m = do
+  reserved "("
+  n <- m
+  reserved ")"
+  return n
