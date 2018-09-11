@@ -28,6 +28,7 @@ library
   exposed-modules:
       Lib
       Data.Parsers.NanoParsec
+      Data.Syntax.Calculator
   other-modules:
       Paths_lip
   hs-source-dirs:
