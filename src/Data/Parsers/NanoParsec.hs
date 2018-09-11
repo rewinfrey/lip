@@ -294,6 +294,7 @@ parse x "ABC"
 
 token :: Parser a -> Parser a
 token p = do
+  spaces
   a <- p
   spaces
   return a
