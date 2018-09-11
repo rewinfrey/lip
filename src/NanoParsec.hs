@@ -315,3 +315,9 @@ spaces = many $ oneOf " \t\n\r"
 digit :: Parser Char
 digit = satisfy isDigit
 
+number :: Parser Int
+number = do
+  s <- string "-" <|> return []
+  cs <- some digit
+  return $ read (s <> cs)
+
