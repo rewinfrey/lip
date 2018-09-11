@@ -300,3 +300,9 @@ parse x "ABC"
                                               ["ABC", ""]
 -}
 
+token :: Parser a -> Parser a
+token p = do
+  a <- p
+  spaces
+  return a
+
