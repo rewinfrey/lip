@@ -187,3 +187,11 @@ chainl1 p op = do
       f <- op
       b <- p
       rest (f a b)
+
+-- The char combinator succeeds if the provided Char is equal to the current Char
+-- when parsing the input String.
+char :: Char -> Parser Char
+char c = do
+  traceM "in char"
+  satisfy (c ==)
+
