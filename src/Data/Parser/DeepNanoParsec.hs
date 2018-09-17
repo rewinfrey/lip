@@ -119,3 +119,21 @@ eval p s = case p of
   Combine p p' -> eval p s <> eval p' s
   Option p p'  -> eval p s <|> eval p' s
 
+sequenceExample :: Parser String
+sequenceExample = do
+  result1 <- string "abc"
+  result2 <- string "def"
+  pure (result1 <> result2)
+
+combineExample :: Parser String
+combineExample = combine (string "abc") (string "def")
+
+optionExample :: Parser String
+optionExample = (string "abc") <|> (string "def")
+
+mixExample :: Parser String
+mixExample = do
+  result1 <- string "abc" <|> string "def"
+  result2 <- string "ghi"
+  result3 <- parens number
+  pure (result1 <|> result2 <|> (show result3))
