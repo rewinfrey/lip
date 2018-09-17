@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -fno-warn-unused-do-bind #-}
 
-module Data.Parsers.NanoParsec where
+module Data.Parser.ShallowNanoParsec where
 
 {-
   NanoParsec is based entirely on http://dev.stephendiehl.com/fun/002_parsers.html.
@@ -34,6 +34,8 @@ runParser m s =
     [(res, [])] -> res
     [(_,   rs)] -> error "Parser did not consume the entire stream."
     _           -> error "Parser error."
+
+example = string "abc" >> string "def"
 
 -- A Parser is a function that takes an input String, and returns a list of pairs
 -- where `a` is the result, and String is the remaining string to parse.

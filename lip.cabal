@@ -27,8 +27,9 @@ source-repository head
 library
   exposed-modules:
       Lib
-      Data.Interpreters.Calculator
-      Data.Parsers.NanoParsec
+      Data.Interpreter.Calculator
+      Data.Parser.ShallowNanoParsec
+      Data.Parser.DeepNanoParsec
       Data.Syntax.Calculator
   other-modules:
       Paths_lip

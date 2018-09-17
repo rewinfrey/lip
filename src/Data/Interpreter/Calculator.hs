@@ -1,7 +1,7 @@
-module Data.Interpreters.Calculator where
+module Data.Interpreter.Calculator where
 
 import Control.Monad (forever)
-import Data.Parsers.NanoParsec
+import Data.Parser.ShallowNanoParsec
 import Data.Syntax.Calculator
 
 eval :: Expr -> Int

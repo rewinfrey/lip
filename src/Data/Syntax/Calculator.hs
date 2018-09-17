@@ -1,6 +1,6 @@
 module Data.Syntax.Calculator where
 
-import Data.Parsers.NanoParsec
+import Data.Parser.ShallowNanoParsec
 import Control.Applicative ((<|>))
 
 data Expr
