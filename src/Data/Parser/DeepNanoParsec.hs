@@ -35,6 +35,7 @@ instance Alternative Parser where
 
 -- TODO: Data Result a = Result { match :: a, rest :: String } deriving Functor
 -- Then we can interpret the return type of `eval` to Result
+-- Usually interpret your deeply embedded monad in terms of another monad.
 eval :: Parser a -> String -> [(a, String)]
 eval p s = case p of
   Pure c       -> pure (c, s)
