@@ -33,6 +33,8 @@ instance Alternative Parser where
   empty = mzero
   (<|>) = Option
 
+-- TODO: Data Result a = Result { match :: a, rest :: String } deriving Functor
+-- Then we can interpret the return type of `eval` to Result
 eval :: Parser a -> String -> [(a, String)]
 eval p s = case p of
   Pure c       -> pure (c, s)
