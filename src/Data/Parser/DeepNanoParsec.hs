@@ -33,3 +33,15 @@ instance Alternative Parser where
   empty = mzero
   (<|>) = Option
 
+eval :: Parser a -> String -> [(a, String)]
+eval p s = case p of
+  Pure c       -> pure (c, s)
+  Item         -> if null s then mzero else pure (head s, tail s)
+  Failure      -> mzero
+  FMap f p'    -> fmap (\(a, s') -> (f a, s')) (eval p' s)
+  Ap pf p      -> [(f a, s'') | (f, s') <- eval pf s, (a, s'') <- eval p s']
+  Satisfy p    -> if null s then mzero else if p (head s) then pure (head s, tail s) else mzero
+  Bind p f     -> concatMap (\(a, s') -> eval (f a) s') (eval p s)
+  Combine p p' -> eval p s <> eval p' s
+  Option p p'  -> eval p s <|> eval p' s
+
