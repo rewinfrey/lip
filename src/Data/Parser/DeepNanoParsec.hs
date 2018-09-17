@@ -33,6 +33,77 @@ instance Alternative Parser where
   empty = mzero
   (<|>) = Option
 
+bind :: Parser a -> (a -> Parser b) -> Parser b
+bind = Bind
+
+combine :: Parser a -> Parser a -> Parser a
+combine = Combine
+
+item :: Parser Char
+item = Item
+
+satisfy :: (Char -> Bool) -> Parser Char
+satisfy = Satisfy
+
+failure :: Parser a
+failure = Failure
+
+char :: Char -> Parser Char
+char = satisfy . (==)
+
+string :: String -> Parser String
+string [] = return []
+string (c:cs) = char c >> string cs >> return (c:cs)
+
+oneOf :: String -> Parser Char
+oneOf = satisfy . flip elem
+
+chainl :: Parser a -> Parser (a -> a -> a) -> a -> Parser a
+chainl p op a = (p `chainl1` op) <|> return a
+
+chainl1 :: Parser a -> Parser (a -> a -> a) -> Parser a
+chainl1 p op = do
+  a <- p
+  rest a
+  where
+    rest a  = recur a <|> return a
+    recur a = do
+      f <- op
+      b <- p
+      rest (f a b)
+
+natural :: Parser Integer
+natural = read <$> some (satisfy isDigit)
+
+token :: Parser a -> Parser a
+token p = do
+  spaces
+  a <- p
+  spaces
+  return a
+
+reserved :: String -> Parser String
+reserved = token . string
+
+spaces :: Parser String
+spaces = many $ oneOf " \t\n\r"
+
+digit :: Parser Char
+digit = satisfy isDigit
+
+number :: Parser Int
+number = do
+  s <- string "-" <|> return []
+  cs <- some digit
+  return $ read (s <> cs)
+
+parens :: Parser a -> Parser a
+parens p = do
+  reserved "("
+  a <- p
+  reserved ")"
+  return a
+
 -- TODO: Data Result a = Result { match :: a, rest :: String } deriving Functor
 -- Then we can interpret the return type of `eval` to Result
 -- Usually interpret your deeply embedded monad in terms of another monad.
