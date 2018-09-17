@@ -16,3 +16,20 @@ data Parser a where
   Option  :: Parser a -> Parser a -> Parser a
   Satisfy :: (Char -> Bool) -> Parser Char
 
+instance Functor Parser where fmap = FMap
+
+instance Applicative Parser where
+  pure = Pure
+  (<*>) = Ap
+
+instance Monad Parser where
+  (>>=) = Bind
+
+instance MonadPlus Parser where
+  mzero = Failure
+  mplus = Combine
+
+instance Alternative Parser where
+  empty = mzero
+  (<|>) = Option
+
