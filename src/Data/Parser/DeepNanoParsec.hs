@@ -6,7 +6,6 @@ import Control.Monad
 import Control.Applicative
 
 data Parser a where
-  Item    :: Parser Char
   FMap    :: (a -> b) -> Parser a -> Parser b
   Pure    :: a -> Parser a
   Ap      :: Parser (a -> b) -> Parser a -> Parser b
@@ -38,9 +37,6 @@ bind = Bind
 
 combine :: Parser a -> Parser a -> Parser a
 combine = Combine
-
-item :: Parser Char
-item = Item
 
 satisfy :: (Char -> Bool) -> Parser Char
 satisfy = Satisfy
@@ -110,7 +106,6 @@ parens p = do
 eval :: Parser a -> String -> [(a, String)]
 eval p s = case p of
   Pure c       -> pure (c, s)
-  Item         -> if null s then mzero else pure (head s, tail s)
   Failure      -> mzero
   FMap f p'    -> fmap (\(a, s') -> (f a, s')) (eval p' s)
   Ap pf p      -> [(f a, s'') | (f, s') <- eval pf s, (a, s'') <- eval p s']
