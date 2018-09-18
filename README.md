@@ -2,6 +2,10 @@
 
 This repository is a collection of experiments in language development including parsing, syntax representation, evaluation strategies, pretty printing, and unparsing.
 
+### Learning Log
+
+* [Shallow vs Deep Embedding](https://github.com/rewinfrey/lip/blob/master/posts/shallow-vs-deep-embedding.md)
+
 ### References
 
 * [Diehl, Stephen. Write You a Haskell. Referenced from http://dev.stephendiehl.com/fun/.](http://dev.stephendiehl.com/fun/)
