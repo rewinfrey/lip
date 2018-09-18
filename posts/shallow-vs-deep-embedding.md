@@ -1,5 +1,7 @@
 # Shallow vs. Deep Embedding
 
+2018-09-18
+
 The `NanoParsec` parser described in Stephen Dieh's [tutorial](http://dev.stephendiehl.com/fun/002_parsers.html)
 provides data and operations common to parsing in a functional context. The data is in the form of a `Parser a` type
 parameterized by a type variable representing the parser's return value. `Parser Char` therefore represents a parser that returns
@@ -40,8 +42,8 @@ without requiring changes to our data.
 Deep embeddings allows us to define multiple semantic definitions for an operation (e.g. `bind`) without adding new operations or changing our data representations.
 This is possible because deep embeddings separate the definition of an operation from the definition of that operation's semantics. Because we can separate an
 operation's definition from its semantics, operations in a deep embedding are more akin to data construction that is interpreted or evaluated by one or more interpreters.
-Interpreters differ based on their return type, so if we want to provide a `List` result from our `Parser a` we can write a `listEval` interpreter. If we want a `Maybe` result we
-can write a `maybeEval` interpreter, and so on. The final result type from an interpreter will inform the semantics of the operations the interpreter evaluates.
+Interpreters differ based on their return type, so if we want to provide a `List` result from our `Parser a` we can write a `listEval` interpreter. If we want a `Maybe`
+result we can write a `maybeEval` interpreter, and so on. The final result type from an interpreter will inform the semantics of the operations the interpreter evaluates.
 
 ```haskell
 data Parser a where
@@ -90,6 +92,10 @@ For a majority of use cases a deep embedding will provide the maximum flexibilit
 This post and learning would not have been possible without [Patrick Thomson](https://github.com/patrickt). Patrick first introduced me to the idea of deep embeddings and
 graciously offered his time and help in implementing the deep embedding version of `NanoParsec`. Many many thanks Patrick for your help in both understanding how to implement
 deep embeddings and why they are so beneficial!
+
+### Code
+
+Please see the full versions of the [shallow embedding](https://github.com/rewinfrey/lip/blob/master/src/Data/Parser/ShallowNanoParsec.hs) and [deep embedding](https://github.com/rewinfrey/lip/blob/master/src/Data/Parser/DeepNanoParsec.hs).
 
 ### References
 
