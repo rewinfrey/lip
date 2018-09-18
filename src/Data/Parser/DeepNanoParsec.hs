@@ -6,7 +6,6 @@ import Control.Monad
 import Control.Applicative
 
 data Parser a where
-  FMap    :: (a -> b) -> Parser a -> Parser b
   Pure    :: a -> Parser a
   Ap      :: Parser (a -> b) -> Parser a -> Parser b
   Bind    :: Parser a -> (a -> Parser b) -> Parser b
@@ -15,7 +14,7 @@ data Parser a where
   Option  :: Parser a -> Parser a -> Parser a
   Satisfy :: (Char -> Bool) -> Parser Char
 
-instance Functor Parser where fmap = FMap
+instance Functor Parser where fmap = liftA
 
 instance Applicative Parser where
   pure = Pure
@@ -107,7 +106,6 @@ eval :: Parser a -> String -> [(a, String)]
 eval p s = case p of
   Pure c       -> pure (c, s)
   Failure      -> mzero
-  FMap f p'    -> fmap (\(a, s') -> (f a, s')) (eval p' s)
   Ap pf p      -> [(f a, s'') | (f, s') <- eval pf s, (a, s'') <- eval p s']
   Satisfy p    -> if null s then mzero else if p (head s) then pure (head s, tail s) else mzero
   Bind p f     -> concatMap (\(a, s') -> eval (f a) s') (eval p s)
