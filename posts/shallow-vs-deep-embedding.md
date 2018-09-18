@@ -83,6 +83,12 @@ General guidelines may be useful for deciding whether a deep or shallow embeddin
 
 For a majority of use cases a deep embedding will provide the maximum flexibility at the expense of slightly more code as the number of interpreters increases.
 
+### Thanks
+
+This post and learning would not have been possible without [Patrick Thomson](https://github.com/patrickt). Patrick first introduced me to the idea of deep embeddings and
+graciously offered his time and help in implementing the deep embedding version of `NanoParsec`. Many many thanks Patrick for your help in both understanding how to implement
+deep embeddings and why they are so beneficial!
+
 ### References
 
 Gibbons, Jeremy. "Folding Domain-Specific Languages: Deep and Shallow Embeddings". Referenced from https://www.cs.ox.ac.uk/people/jeremy.gibbons/publications/embedding-short.pdf.
