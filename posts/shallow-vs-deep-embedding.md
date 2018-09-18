@@ -1,7 +1,7 @@
 # Shallow vs. Deep Embedding
 
 The `NanoParsec` parser described in Stephen Dieh's [tutorial](http://dev.stephendiehl.com/fun/002_parsers.html)
-provides data and operations common to parsing in a functional context. The data is in the form of a `Parser` type
+provides data and operations common to parsing in a functional context. The data is in the form of a `Parser a` type
 parameterized by a type variable representing the parser's return value. `Parser Char` therefore represents a parser that returns
 characters. `Parser String` represents a parser that return strings, etc. The parser operations in `NanoParsec` are based on methods
 from common Haskell type classes such as `Monad`, `Applicative`, `Functor`, `Alternative`, and `MonadPlus`. Lastly, combinators are
@@ -10,8 +10,8 @@ combinators and their parser / operation semantics. All of this is to say that `
 describing the data and operations of parsing. Two terms associated with domain specific languages (DSLs) are shallow and deep
 embeddings.
 
-The approach outlined in Stephen Diehl's tutorial is that of a shallow embedding. Namely, that the semantics of parser operations are
-defined together with the definition of a parser operation:
+The approach outlined in Stephen Diehl's tutorial is that of a shallow embedding. Namely, that the definition for any given parser operation also
+defines its semantics, such as this example of `bind`:
 
 ```haskell
 newtype Parser a = Parser { parse :: String -> [(a, String)] }
@@ -27,21 +27,21 @@ bind p f = Parser $ \s -> concatMap (\(a, s') -> parse (f a) s') $ parse p s
 ...
 ```
 
-This snippet of `NanoParsec`  enough to illustrate the concept of a shallow embedding. Namely, we have data (`Parser a`)
-and operations (`failure` and `bind`) whose definitions also define their semantics. For example, `bind` defines what the bind
-operation on `Parser a` data means. This is the essence of a shallow embedding: when defining an operation, one is also required
-to define the semantics for that operation. An operations in a shallow embedding therefore can only have one definition for its semantics.
-However, what if we want to have flexibility to define the `bind` operation over our `Parser a` data in various ways depending on the context or application?
+This is the essence of a shallow embedding: when defining an operation, one is also required to define the semantics for that operation.
+An operation in a shallow embedding therefore can only have one definition for its semantics. In this example the operation is `bind`.
+However, what if we want the flexibility to define the `bind` operation so it is not limited to `concatMap` and `Data.List` over our `Parser a` data so we can return values of other monadic types?
 
 A shallow embedding will not allow us to define multiple semantic definitions for `bind` without adding new bind operations whose names differ, or by encoding
-additional parameters into our data that `bind` can pattern match against. While one _could_ do this it is not generally thought of as a good idea. We apply
+additional parameters into our data that `bind` can pattern match against. While one _could_ do this it is generally not thought of as a good idea. We apply
 operations to data. The moment we change our data to know something about our operations we set ourselves up for trouble. If our operations change, that also means
-potentially changing our data. The semantics of our operations should be flexible to change without requiring changes to our data.
+potentially changing our data representation. When possible, we should seek to limit code change. It would be ideal if we could change the semantics of our operations
+without requiring changes to our data.
 
-Deep embeddings allows us to define multiple semantic definitions for an operation (e.g. `bind`) without adding new operations. This is possible because deep embeddings
-separate the definition of an operation from the definition of that operation's semantics. Because we can separate an operation's definition from its semantics, operations
-in a deep embedding are more akin to data construction that is interpreted or evaluated by one or more interpreters. The choice of interpreter for evaluating an operation
-provides the choice of semantic definition used when interpreting that operation.
+Deep embeddings allows us to define multiple semantic definitions for an operation (e.g. `bind`) without adding new operations or changing our data representations.
+This is possible because deep embeddings separate the definition of an operation from the definition of that operation's semantics. Because we can separate an
+operation's definition from its semantics, operations in a deep embedding are more akin to data construction that is interpreted or evaluated by one or more interpreters.
+Interpreters differ based on their return type, so if we want to provide a `List` result from our `Parser a` we can write a `listEval` interpreter. If we want a `Maybe` result we
+can write a `maybeEval` interpreter, and so on. The final result type from an interpreter will inform the semantics of the operations the interpreter evaluates.
 
 ```haskell
 data Parser a where
@@ -60,14 +60,16 @@ listEval p s = case p of
 ```
 
 This snippet of a deep embedding for `NanoParsec` focuses only on one operation, `bind`. Here it is possible to see that the definition for the `bind` operation
-is a data constructor for `Bind`. The semantics for how the `bind` operation is interpreted are defined in `listEval`. This interpreter uses the `List` monad's version of
-bind to generate a list of parser results. If we wanted to provide a different return type for our parser operations, for example `Maybe`, we could also define a `maybeEval`
-interpreter. A deep embedding, because it separates the definition of an operation from that operation's semantics, allows operations to be defined using multiple semantic definitions in the form of an interpreter.
+is the `Bind` data constructor. The semantics for how the `bind` operation is interpreted is defined in `listEval` represented by the `Bind` data constructor.
+This interpreter uses the `List` monad's version of `bind` to generate a list of parser results (via `concatMap`). If we wanted to provide a different return type
+for our parser operations, for example `Maybe`, we could also define a `maybeEval` interpreter. A deep embedding, because it separates the definition of an operation
+from that operation's semantics, allows operations to be defined using multiple semantic definitions in the form of an interpreter.
 
 However, deep embeddings are not a zero cost abstraction. Adding a new operation to a deep embedding is more expensive compared with a shallow embedding. If we add a
 new operation to our deep embedding, we must update the data representation (in this instance the `Parser a` GADT) and each interpreter for our data. For instance,
 if we previously defined three interpreters for `Parser a`, then adding a new operation to `Parser a` requires us to update those three interpreters to include the
-new operation. Even though deep embeddings give us a degree of freedom between an operation's definition and its semantics, adding operations to a deep embedding is more complex and costly compared with a shallow embedding.
+new operation. Even though deep embeddings give us a degree of freedom between an operation's definition and its semantics, adding operations to a deep embedding is
+more complex and costly compared with a shallow embedding.
 
 Because a shallow embedding couples the definition of an operation and its semantics, adding new operations to a shallow embedding is straightforward and less costly. This
 ease of adding operations in a shallow embedding is offset by the immense difficulty and complexity of changing the semantics of a single operation. If we want `Parser a` to
