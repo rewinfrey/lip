@@ -7,7 +7,6 @@ import Control.Applicative
 
 data Parser a where
   Pure    :: a -> Parser a
-  Ap      :: Parser (a -> b) -> Parser a -> Parser b
   Bind    :: Parser a -> (a -> Parser b) -> Parser b
   Failure :: Parser a
   Combine :: Parser a -> Parser a -> Parser a
@@ -18,7 +17,7 @@ instance Functor Parser where fmap = liftA
 
 instance Applicative Parser where
   pure = Pure
-  (<*>) = Ap
+  (<*>) = ap
 
 instance Monad Parser where
   (>>=) = Bind
@@ -106,7 +105,6 @@ eval :: Parser a -> String -> [(a, String)]
 eval p s = case p of
   Pure c       -> pure (c, s)
   Failure      -> mzero
-  Ap pf p      -> [(f a, s'') | (f, s') <- eval pf s, (a, s'') <- eval p s']
   Satisfy p    -> if null s then mzero else if p (head s) then pure (head s, tail s) else mzero
   Bind p f     -> concatMap (\(a, s') -> eval (f a) s') (eval p s)
   Combine p p' -> eval p s <> eval p' s
