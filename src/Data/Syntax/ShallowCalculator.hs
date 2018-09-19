@@ -1,4 +1,4 @@
-module Data.Syntax.Calculator where
+module Data.Syntax.ShallowCalculator where
 
 import Data.Parser.ShallowNanoParsec
 import Control.Applicative ((<|>))

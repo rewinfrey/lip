@@ -1,8 +1,8 @@
-module Data.Interpreter.Calculator where
+module Data.Interpreter.ShallowCalculator where
 
 import Control.Monad (forever)
 import Data.Parser.ShallowNanoParsec
-import Data.Syntax.Calculator
+import Data.Syntax.ShallowCalculator
 
 eval :: Expr -> Int
 eval ex = case ex of

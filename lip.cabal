@@ -27,10 +27,10 @@ source-repository head
 library
   exposed-modules:
       Lib
-      Data.Interpreter.Calculator
+      Data.Interpreter.ShallowCalculator
       Data.Parser.ShallowNanoParsec
       Data.Parser.DeepNanoParsec
-      Data.Syntax.Calculator
+      Data.Syntax.ShallowCalculator
   other-modules:
       Paths_lip
   hs-source-dirs:
@@ -38,6 +38,7 @@ library
   build-depends:
         base >=4.7 && <5
       , hscolour
+      , parsec
       , pretty-show
   default-language: Haskell2010
 
