@@ -30,6 +30,7 @@ library
       Data.Interpreter.ShallowCalculator
       Data.Parser.ShallowNanoParsec
       Data.Parser.DeepNanoParsec
+      Data.Parser.Parsec
       Data.Syntax.ShallowCalculator
   other-modules:
       Paths_lip
