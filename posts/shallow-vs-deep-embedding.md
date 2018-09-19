@@ -20,9 +20,6 @@ newtype Parser a = Parser { parse :: String -> [(a, String)] }
 
 ...
 
-failure :: Parser a
-failure = Parser (\cs -> [])
-
 bind :: Parser a -> (a -> Parser b) -> Parser b
 bind p f = Parser $ \s -> concatMap (\(a, s') -> parse (f a) s') $ parse p s
 
