@@ -16,6 +16,7 @@ deriving instance Show Expr
 int :: Parser Expr
 int = do
   n <- number
+  spaces
   return (Lit n)
 
 expr :: Parser Expr
