@@ -97,6 +97,17 @@ parens p = do
   reserved ")"
   return a
 
+-- Parsing an input stream will either yield a parsed result, or error by not
+-- consuming the entire input stream, or error because of a parser error.
+-- TODO: add more robust error information indicating where the error in the input
+-- stream occurred. Either would let us track errors.
+runListParser :: Parser a -> String -> a
+runListParser parser input =
+  case evalList parser input of
+    [(a,   [])]     -> a
+    [(_,   rs)]     -> error "Parser did not consume the entire stream."
+    _               -> error "Parser error."
+
 -- TODO: Data Result a = Result { match :: a, rest :: String } deriving Functor
 -- Then we can interpret the return type of `eval` to Result
 -- Usually interpret your deeply embedded monad in terms of another monad.
