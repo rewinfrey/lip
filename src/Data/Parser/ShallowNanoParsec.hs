@@ -35,8 +35,6 @@ runParser m s =
     [(_,   rs)] -> error "Parser did not consume the entire stream."
     _           -> error "Parser error."
 
-example = string "abc" >> string "def"
-
 -- A Parser is a function that takes an input String, and returns a list of pairs
 -- where `a` is the result, and String is the remaining string to parse.
 newtype Parser a = Parser { parse :: String -> [(a, String)] }
