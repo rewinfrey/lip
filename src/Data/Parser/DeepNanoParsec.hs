@@ -111,14 +111,14 @@ runListParser parser input =
 -- TODO: Data Result a = Result { match :: a, rest :: String } deriving Functor
 -- Then we can interpret the return type of `eval` to Result
 -- Usually interpret your deeply embedded monad in terms of another monad.
-eval :: Parser a -> String -> [(a, String)]
-eval p s = case p of
+evalList :: Parser a -> String -> [(a, String)]
+evalList p s = case p of
   Pure c       -> pure (c, s)
   Failure      -> mzero
   Satisfy p    -> if null s then mzero else if p (head s) then pure (head s, tail s) else mzero
-  Bind p f     -> concatMap (\(a, s') -> eval (f a) s') (eval p s)
-  Combine p p' -> eval p s <> eval p' s
-  Option p p'  -> eval p s <|> eval p' s
+  Bind p f     -> concatMap (\(a, s') -> evalList (f a) s') $ (evalList p s)
+  Combine p p' -> evalList p s <> evalList p' s
+  Option p p'  -> evalList p s <|> evalList p' s
 
 sequenceExample :: Parser String
 sequenceExample = do
