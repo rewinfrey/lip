@@ -71,7 +71,6 @@ natural = read <$> some (satisfy isDigit)
 
 token :: Parser a -> Parser a
 token p = do
-  spaces
   a <- p
   spaces
   return a
