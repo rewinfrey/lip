@@ -27,6 +27,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Data.Interpreter.DeepCalculator
       Data.Interpreter.ShallowCalculator
       Data.Parser.ShallowNanoParsec
       Data.Parser.DeepNanoParsec
