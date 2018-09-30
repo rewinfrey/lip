@@ -35,10 +35,15 @@ resolver: lts-12.9
 #  - wai
 packages:
 - .
+- location:
+    git: https://github.com/joshvera/effects
+    commit: fc7fc0e2896239a1fef3dbc40a76c131c42e0396
+  extra-dep: true
 # Dependency packages to be pulled from upstream that are not in the resolver
 # using the same syntax as the packages field.
 # (e.g., acme-missiles-0.3)
-# extra-deps: []
+extra-deps:
+- type-aligned-0.9.6
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
