@@ -9,6 +9,8 @@ import Control.Monad.Effect
 import Control.Monad.Effect.Internal as I
 import System.Exit hiding (ExitSuccess)
 
+import Debug.Trace
+
 data Teletype (m :: * -> *) s where
   PutStrLn    :: String -> Teletype m ()
   GetLine     :: Teletype m String
@@ -28,11 +30,11 @@ exitSuccess' = send ExitSuccess
 
 -- Runs a Teletype effect b and returns IO b.
 run :: Eff '[Teletype] a -> IO a
-run (Return x) = pure x
+run (Return x) = traceM "yo yo" >> pure x
 run (E u q) = case decompose u of
-  Right (PutStrLn msg) -> putStrLn msg  >> Data.Effects.Teletype.run (apply q ())
+  Right (PutStrLn msg) -> traceM "here" >> putStrLn msg >> Data.Effects.Teletype.run (apply q ())
   Right GetLine        -> getLine      >>= \s -> Data.Effects.Teletype.run (apply q s)
-  Right ExitSuccess    -> exitSuccess
+  Right ExitSuccess    -> traceM "exit" >> exitSuccess
   Left  _              -> error "This cannot happen"
 
 -- Takes a list of strings and a teletype effect to run and
