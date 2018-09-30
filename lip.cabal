@@ -30,12 +30,14 @@ library
       Data.Effects.Teletype
       Data.Interpreter.DeepCalculator
       Data.Interpreter.ShallowCalculator
+      Data.Interpreter.SimpleLanguage
       Data.Parser.EffectsNanoParsec
       Data.Parser.ShallowNanoParsec
       Data.Parser.DeepNanoParsec
-      Data.Parser.Parsec
+      Data.Parser.SimpleLanguage
       Data.Syntax.DeepCalculator
       Data.Syntax.ShallowCalculator
+      Data.Syntax.SimpleLanguage
   other-modules:
       Paths_lip
   hs-source-dirs:
