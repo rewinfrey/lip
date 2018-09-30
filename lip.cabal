@@ -46,6 +46,7 @@ library
         base >=4.7 && <5
       , effects
       , freer-simple
+      , haskeline
       , hscolour
       , parsec
       , pretty-show
