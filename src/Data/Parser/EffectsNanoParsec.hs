@@ -115,12 +115,12 @@ number = do
   return $ read (s <> cs)
 
 -- Not sure what to do about this.
-parens :: Parser m a -> Eff r a
-parens p = send $ do
-  reserved "("
-  a <- return p
-  reserved ")"
-  return a
+-- parens :: Parser m a -> Eff r a
+-- parens p = send $ do
+--   reserved "("
+--   a <- p
+--   reserved ")"
+--   return a
 
 {-
 
